@@ -1,9 +1,10 @@
-package src.cognitivetask;
-//package cognitivetask;
+//package src.cognitivetask;
+package cognitivetask;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -58,6 +59,12 @@ public class MainFrame extends JFrame {
 	private Timer timer;
 	long start;
 	long end;
+
+	private int panelWidth;
+	private int panelHeight;
+	private float mag;
+	private int padding_x;
+	private float padding_y;
 
 	List<Node> xminNode;
 	List<Node> yminNode;
@@ -136,6 +143,7 @@ public class MainFrame extends JFrame {
 		preImagePanel.setOpaque( false ) ;
 		preImagePanel.setBackground(Color.WHITE);
 		preImagePanel.setBounds(0, 422, 233, 177);
+		//preImagePanel.setMaximumSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
 		//contentPane.add(preImagePanel);
 		preImagePanel.setLayout(null);
 
@@ -159,7 +167,19 @@ public class MainFrame extends JFrame {
 		postImagePanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				int btn = e.getButton();
+				if(btn == MouseEvent.BUTTON1){
 				System.out.println("hazure");
+				}else if(btn == MouseEvent.BUTTON3){
+
+					contentPane.remove(postImagePanel);
+					contentPane.add(restingPanel);
+		           	SwingUtilities.updateComponentTreeUI(contentPane);
+
+		        	end = System.currentTimeMillis();
+		        	System.out.println((end - start)  + "ms");
+
+				}
 			}
 		});
 
@@ -178,6 +198,7 @@ public class MainFrame extends JFrame {
 	        	end = System.currentTimeMillis();
 	        	System.out.println((end - start)  + "ms");
 			}
+
 		});
 
 
@@ -197,6 +218,12 @@ public class MainFrame extends JFrame {
 						restingPanel.add(btnNext);
 
 
+
+
+
+
+
+
 		ActionListener action = new PanelChangerLogToBlank1();
 	    timer = new Timer(0,action);
 	    timer.setRepeats(false);
@@ -210,7 +237,10 @@ public class MainFrame extends JFrame {
 			putValue(SHORT_DESCRIPTION, "Some short description");
 		}
 		public void actionPerformed(ActionEvent e) {
-			itr = 1;
+			panelWidth = contentPane.getWidth();
+    		panelHeight = contentPane.getHeight();
+
+			itr = 0;
 			subjectNum = Integer.parseInt(comboBox.getSelectedItem().toString());
 
 
@@ -262,8 +292,18 @@ public class MainFrame extends JFrame {
         	timer.stop();
 
         	ImageIcon preImage = new ImageIcon(currentDirectry+"/DataSet/"+itr+"/pre_"+itr+".png");
-   			lblPreImage.setIcon(preImage);
-   			lblPreImage.setBounds(0,0,preImage.getIconWidth(),preImage.getIconHeight());
+
+
+        	float maxSize = Math.max(preImage.getIconHeight(),preImage.getIconWidth());
+        	mag = (float)(Math.min(panelWidth, panelHeight))/maxSize;
+        	padding_x = (int)((panelWidth-mag*preImage.getIconWidth())/2);
+
+        	Image smallPreImage = preImage.getImage().getScaledInstance((int)(mag*preImage.getIconWidth()), (int) (mag*preImage.getIconHeight()), Image.SCALE_SMOOTH);
+
+        	ImageIcon smallPreImageIcon = new ImageIcon(smallPreImage);
+   			lblPreImage.setIcon(smallPreImageIcon);
+   			lblPreImage.setBounds(padding_x,0,smallPreImageIcon.getIconWidth(),smallPreImageIcon.getIconHeight());
+
    			preImagePanel.add(lblPreImage);
 
         	SwingUtilities.updateComponentTreeUI(preImagePanel);
@@ -308,7 +348,7 @@ public class MainFrame extends JFrame {
    	     SAXReader reader = new SAXReader();
 
    			try {
-   				Document document = reader.read(currentDirectry+"/Annotation/"+itr+".xml");
+   				Document document = reader.read(currentDirectry+"/DataSet/"+itr+"/Post_"+itr+".xml");
    				xminNode  = document.selectNodes("annotation/object/bndbox/xmin");
    				yminNode  = document.selectNodes("annotation/object/bndbox/ymin");
    				xmaxNode  = document.selectNodes("annotation/object/bndbox/xmax");
@@ -322,13 +362,19 @@ public class MainFrame extends JFrame {
    			int xmax = Integer.parseInt(xmaxNode.get(0).getText());
    			int ymax = Integer.parseInt(ymaxNode.get(0).getText());
 
-System.out.println(currentDirectry+"/DataSet/"+itr+"/post_"+itr+".png");
+   			System.out.println(currentDirectry+"/DataSet/"+itr+"/post_"+itr+".png");
    			ImageIcon postImage = new ImageIcon(currentDirectry+"/DataSet/"+itr+"/post_"+itr+".png");
-   			lblPostimage.setIcon(postImage);
-   			lblPostimage.setBounds(0,0,postImage.getIconWidth(),postImage.getIconHeight());
+
+   			Image smallPostImage = postImage.getImage().getScaledInstance((int)(mag*postImage.getIconWidth()), (int) (mag*postImage.getIconHeight()), Image.SCALE_SMOOTH);
+
+        	ImageIcon smallPostImageIcon = new ImageIcon(smallPostImage);
+
+   			lblPostimage.setIcon(smallPostImageIcon);
+   			lblPostimage.setBounds(padding_x,0,smallPostImageIcon.getIconWidth(),smallPostImageIcon.getIconHeight());
    			postImagePanel.add(lblPostimage);
 
-   			lblAnnotation.setBounds(xmin, ymin, xmax-xmin, ymax-ymin);
+   			lblAnnotation.setBounds((int)(xmin*mag)+padding_x, (int)(ymin*mag), (int)((xmax-xmin)*mag), (int)((ymax-ymin)*mag));
+   			System.out.println((int)(xmin*mag)+padding_x+" "+ (int)(ymin*mag)+" "+  (int)((xmax-xmin)*mag)+" "+ (int)((ymax-ymin)*mag));
    			postImagePanel.add(lblAnnotation);
 
         	SwingUtilities.updateComponentTreeUI(postImagePanel);
@@ -375,7 +421,7 @@ System.out.println(currentDirectry+"/DataSet/"+itr+"/post_"+itr+".png");
 			    System.out.println("next");
 				timer.restart();
 				}else{
-					itr = 1;
+					itr = 0;
 					ActionListener action = new PanelChangerRestToLog();
 				    timer = new Timer(0,action);
 					timer.restart();
