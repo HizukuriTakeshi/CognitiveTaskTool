@@ -1,4 +1,5 @@
-package cognitivetask;
+package src.cognitivetask;
+//package cognitivetask;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
