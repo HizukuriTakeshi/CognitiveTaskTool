@@ -1,4 +1,4 @@
-package cognitivetask;
+package cognitivetaskGUI;
 
 import java.awt.Color;
 import java.awt.Font;

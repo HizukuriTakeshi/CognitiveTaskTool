@@ -1,5 +1,5 @@
 //package src.cognitivetask;
-package cognitivetask;
+package cognitivetaskGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,14 +25,20 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.xml.bind.JAXB;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
+import xmlUtility.Click;
+import xmlUtility.Result;
+import xmlUtility.Task;
+
 public class MainFrame extends JFrame {
 
+	//Compornent
 	private JPanel contentPane;
 	// private JPanel loginPanel;
 	private LoginPanel loginPanel;
@@ -50,21 +56,35 @@ public class MainFrame extends JFrame {
 	private JLabel lblPreImage;
 	private JLabel lblPostimage;
 	private JLabel lblAnnotation;
-	//private JButton btnNext;
+	// private JButton btnNext;
 
+	//File Operation
 	private String currentDirectry;
-	private int subjectNum;
+	private int subjectID;
 	private int itr;
 
+	//XML io
+	private Result result;
+	private List<Task> tasks;
+	private Task tmpTask;
+	private List<Click> clicks;
+	private Click tmpClick;
+
+	//Task
+	private int currentTaskID;
+
+
+	//Time controll
 	private Timer timer;
 	final private int intervalTime = 1000;
 	final private int showTime = 2000;
 	private Timer limitTimer;
-	final private int limitTime = 5000;
+	final private int limitTime = 30000;
 
 	long start;
 	long end;
 
+	//Panel Size
 	private int panelWidth;
 	private int panelHeight;
 	private float mag;
@@ -76,12 +96,11 @@ public class MainFrame extends JFrame {
 	List<Node> xmaxNode;
 	List<Node> ymaxNode;
 
-	List<Integer> tasks;
+	//task information
+	List<Integer> taskOrder;
 
 	public final Action testAction = new SwingAction_1();
 	public final Action nextAction = new SwingAction_2();
-
-
 
 	/**
 	 * Launch the application.
@@ -178,6 +197,18 @@ public class MainFrame extends JFrame {
 				int btn = e.getButton();
 				if (btn == MouseEvent.BUTTON1) {
 					System.out.println("hazure");
+					end = System.currentTimeMillis();
+					long time = end - start;
+					System.out.println(time + "ms");
+
+					tmpClick = new Click();
+					tmpClick.setTime(time);
+					tmpClick.setTorf(false);
+					tmpClick.setX(e.getX()-padding_x);
+					tmpClick.setX(e.getY());
+
+
+					clicks.add(tmpClick);
 				} else if (btn == MouseEvent.BUTTON3) {
 
 					limitTimer.stop();
@@ -187,7 +218,18 @@ public class MainFrame extends JFrame {
 					SwingUtilities.updateComponentTreeUI(contentPane);
 
 					end = System.currentTimeMillis();
-					System.out.println((end - start) + "ms");
+					long time = end - start;
+					System.out.println(time + "ms");
+
+					tmpClick = new Click();
+					tmpClick.setTime(time);
+					//ここをなんとかする
+					tmpClick.setTorf(false);
+					tmpClick.setX(e.getX()-padding_x);
+					tmpClick.setX(e.getY());
+
+
+					clicks.add(tmpClick);
 
 				}
 			}
@@ -208,7 +250,18 @@ public class MainFrame extends JFrame {
 				SwingUtilities.updateComponentTreeUI(contentPane);
 
 				end = System.currentTimeMillis();
-				System.out.println((end - start) + "ms");
+
+				long time = end - start;
+				System.out.println(time + "ms");
+
+				tmpClick = new Click();
+				tmpClick.setTime(time);
+				tmpClick.setTorf(true);
+				tmpClick.setX(e.getX()-padding_x);
+				tmpClick.setX(e.getY());
+
+
+				clicks.add(tmpClick);
 			}
 
 		});
@@ -217,16 +270,18 @@ public class MainFrame extends JFrame {
 		// postImagePanel.add(lblPostimage);
 
 		restingPanel = new RestingPanel(this);
-		//restingPanel.setBounds(299, 422, 233, 177);
+		// restingPanel.setBounds(299, 422, 233, 177);
 		// contentPane.add(restingPanel);
-		//restingPanel.setOpaque(false);
-		//restingPanel.setBackground(Color.WHITE);
-		//restingPanel.setLayout(null);
+		// restingPanel.setOpaque(false);
+		// restingPanel.setBackground(Color.WHITE);
+		// restingPanel.setLayout(null);
 
-		//btnNext = new JButton("next");
-		//btnNext.setAction(nextAction);
-		//btnNext.setBounds(55, 85, 117, 29);
-		//restingPanel.add(btnNext);
+		// btnNext = new JButton("next");
+		// btnNext.setAction(nextAction);
+		// btnNext.setBounds(55, 85, 117, 29);
+		// restingPanel.add(btnNext);
+
+
 
 		ActionListener action = new PanelChangerLogToBlank1();
 		timer = new Timer(0, action);
@@ -242,32 +297,41 @@ public class MainFrame extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			//ウィンドウサイズ取得
 			panelWidth = contentPane.getWidth();
 			panelHeight = contentPane.getHeight();
 
 			itr = 0;
-			subjectNum = Integer.parseInt(loginPanel.comboBox.getSelectedItem().toString());
+			subjectID = Integer.parseInt(loginPanel.comboBox.getSelectedItem().toString());
+
+
 
 			try {
-				File f = new File(currentDirectry + "/subject/subject_" + subjectNum + ".csv");
+				File f = new File(currentDirectry + "/subject/subject_" + subjectID + ".csv");
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
-				tasks = new ArrayList<Integer>();
+				taskOrder = new ArrayList<Integer>();
 				String line = br.readLine();
 				while (line != null) {
-					tasks.add(Integer.parseInt(line));
+					taskOrder.add(Integer.parseInt(line));
 					line = br.readLine();
 				}
 				br.close();
 
 				// CSVから読み込んだ配列の中身を表示
-				for (int j = 0; j < tasks.size(); j++) {
-					System.out.println(tasks.get(j));
-				}
+				// for (int j = 0; j < tasks.size(); j++) {
+				// System.out.println(tasks.get(j));
+				// }
 
 			} catch (IOException ea) {
 				System.out.println(ea);
 			}
+
+			//結果出力用のクラスインスタンス
+			result = new Result();
+			result.setSubjectID(subjectID);
+			tasks = new ArrayList<Task>();
+			clicks = new ArrayList<Click>();
 
 			timer.restart();
 		}
@@ -292,9 +356,14 @@ public class MainFrame extends JFrame {
 	class PanelChangeBlank1ToPreImage implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			currentTaskID = taskOrder.get(itr);
+			tmpTask = new Task();
+			tmpTask.setTaskID(currentTaskID);
+
+
 			timer.stop();
 
-			ImageIcon preImage = new ImageIcon(currentDirectry + "/DataSet/" + itr + "/pre_" + itr + ".png");
+			ImageIcon preImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/pre_" + currentTaskID + ".png");
 
 			float maxSize = Math.max(preImage.getIconHeight(), preImage.getIconWidth());
 			mag = (float) (Math.min(panelWidth, panelHeight)) / maxSize;
@@ -348,7 +417,7 @@ public class MainFrame extends JFrame {
 			SAXReader reader = new SAXReader();
 
 			try {
-				Document document = reader.read(currentDirectry + "/DataSet/" + itr + "/Post_" + itr + ".xml");
+				Document document = reader.read(currentDirectry + "/DataSet/" + currentTaskID + "/Post_" + currentTaskID + ".xml");
 				xminNode = document.selectNodes("annotation/object/bndbox/xmin");
 				yminNode = document.selectNodes("annotation/object/bndbox/ymin");
 				xmaxNode = document.selectNodes("annotation/object/bndbox/xmax");
@@ -362,8 +431,8 @@ public class MainFrame extends JFrame {
 			int xmax = Integer.parseInt(xmaxNode.get(0).getText());
 			int ymax = Integer.parseInt(ymaxNode.get(0).getText());
 
-			System.out.println(currentDirectry + "/DataSet/" + itr + "/post_" + itr + ".png");
-			ImageIcon postImage = new ImageIcon(currentDirectry + "/DataSet/" + itr + "/post_" + itr + ".png");
+			//System.out.println(currentDirectry + "/DataSet/" + itr + "/post_" + itr + ".png");
+			ImageIcon postImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/post_" + currentTaskID + ".png");
 
 			Image smallPostImage = postImage.getImage().getScaledInstance((int) (mag * postImage.getIconWidth()),
 					(int) (mag * postImage.getIconHeight()), Image.SCALE_SMOOTH);
@@ -376,8 +445,7 @@ public class MainFrame extends JFrame {
 
 			lblAnnotation.setBounds((int) (xmin * mag) + padding_x, (int) (ymin * mag), (int) ((xmax - xmin) * mag),
 					(int) ((ymax - ymin) * mag));
-			System.out.println((int) (xmin * mag) + padding_x + " " + (int) (ymin * mag) + " "
-					+ (int) ((xmax - xmin) * mag) + " " + (int) ((ymax - ymin) * mag));
+			//System.out.println((int) (xmin * mag) + padding_x + " " + (int) (ymin * mag) + " "+ (int) ((xmax - xmin) * mag) + " " + (int) ((ymax - ymin) * mag));
 			postImagePanel.add(lblAnnotation);
 
 			SwingUtilities.updateComponentTreeUI(postImagePanel);
@@ -389,7 +457,7 @@ public class MainFrame extends JFrame {
 			// stopwatchスタート
 			start = System.currentTimeMillis();
 
-			//制限時間スタート
+			// 制限時間スタート
 			ActionListener action = new PanelChangerPostImageToRest();
 			limitTimer = new Timer(limitTime, action);
 			limitTimer.restart();
@@ -406,7 +474,6 @@ public class MainFrame extends JFrame {
 			SwingUtilities.updateComponentTreeUI(contentPane);
 		}
 	}
-
 
 	class PanelChangerRestToBlank1 implements ActionListener {
 
@@ -432,19 +499,29 @@ public class MainFrame extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+
+			tmpTask.setClicks(clicks);
+			tasks.add(tmpTask);
+			clicks = null;
+			clicks = new ArrayList<Click>();
 			itr++;
-			if (itr <= tasks.size()) {
+			if (itr <= 2/*tasks.size()*/) {
 				ActionListener action = new PanelChangerRestToBlank1();
 				timer = new Timer(0, action);
 				timer.setRepeats(false);
 
-				System.out.println("next");
+				//System.out.println("next");
 				timer.restart();
 			} else {
 				itr = 0;
 				ActionListener action = new PanelChangerRestToLog();
 				timer = new Timer(0, action);
 				timer.restart();
+
+
+				result.setTasks(tasks);
+				//XML出力
+				JAXB.marshal(result, System.out);
 			}
 
 		}
