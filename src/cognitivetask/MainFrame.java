@@ -18,10 +18,8 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,16 +35,19 @@ import org.dom4j.io.SAXReader;
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JPanel loginPanel;
-	private JComboBox comboBox;
-	private JPanel blankPanel_1;
+	//private JPanel loginPanel;
+	private LoginPanel loginPanel;
+	//private JComboBox comboBox;
+	//private JPanel blankPanel_1;
+	private BlankPanel blankPanel_1;
 	private JPanel preImagePanel;
-	private JPanel blankPanel_2;
+	//private JPanel blankPanel_2;
+	private BlankPanel blankPanel_2;
 	private JPanel postImagePanel;
 	private JPanel restingPanel;
-	private JLabel loginlabel;
-	private JButton btnPractice;
-	private JButton btnTest;
+	//private JLabel loginlabel;
+	//private JButton btnPractice;
+	//private JButton btnTest;
 	private JLabel lblPreImage;
 	private JLabel lblPostimage;
 	private JLabel lblAnnotation;
@@ -64,7 +65,7 @@ public class MainFrame extends JFrame {
 	private int panelHeight;
 	private float mag;
 	private int padding_x;
-	private float padding_y;
+	//private float padding_y;
 
 	List<Node> xminNode;
 	List<Node> yminNode;
@@ -73,8 +74,8 @@ public class MainFrame extends JFrame {
 
 	List<Integer> tasks;
 
-	private final Action testAction = new SwingAction_1();
-	private final Action nextAction = new SwingAction_2();
+	public final Action testAction = new SwingAction_1();
+	public final Action nextAction = new SwingAction_2();
 
 	/**
 	 * Launch the application.
@@ -102,42 +103,41 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 836, 703);
 		contentPane = new JPanel();
-		contentPane.setOpaque(false);
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
-		loginPanel = new JPanel();
-		loginPanel.setOpaque(false) ;
-		loginPanel.setBackground(Color.WHITE);
+		loginPanel = new LoginPanel(this);
+		//loginPanel.setBackground(Color.WHITE);
 		contentPane.add(loginPanel);
-		loginPanel.setLayout(null);
+		//loginPanel.setLayout(null);
 
-		loginlabel = new JLabel("変化検出課題課題");
-		loginlabel.setBounds(345, 273, 127, 16);
-		loginPanel.add(loginlabel);
+		//loginlabel = new JLabel("変化検出課題課題");
+		//loginlabel.setBounds(345, 273, 127, 16);
+		//loginPanel.add(loginlabel);
 
-		btnPractice = new JButton("practice");
-		btnPractice.setBounds(345, 409, 127, 29);
-		loginPanel.add(btnPractice);
+		//btnPractice = new JButton("practice");
+		//btnPractice.setBounds(345, 409, 127, 29);
+		//loginPanel.add(btnPractice);
 
-		btnTest = new JButton("test");
-		btnTest.setAction(testAction);
-		btnTest.setBounds(345, 450, 127, 29);
-		loginPanel.add(btnTest);
+		//btnTest = new JButton("test");
+		//btnTest.setAction(testAction);
+		//btnTest.setBounds(345, 450, 127, 29);
+		//loginPanel.add(btnTest);
 
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5"}));
-		comboBox.setBounds(345, 327, 127, 29);
-		loginPanel.add(comboBox);
+		//comboBox = new JComboBox();
+		//comboBox.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5"}));
+		//comboBox.setBounds(345, 327, 127, 29);
+		//loginPanel.add(comboBox);
 
-		blankPanel_1 = new JPanel();
-		blankPanel_1.setOpaque( false ) ;
-		blankPanel_1.setBackground(Color.WHITE);
-		blankPanel_1.setBounds(0, 218, 233, 177);
+		//blankPanel_1 = new JPanel();
+		blankPanel_1 = new BlankPanel();
+		//blankPanel_1.setOpaque( false ) ;
+		//blankPanel_1.setBackground(Color.WHITE);
+		//blankPanel_1.setBounds(0, 218, 233, 177);
 		//contentPane.add(blankPanel_1);
-		blankPanel_1.setLayout(null);
+		//blankPanel_1.setLayout(null);
 
 		preImagePanel = new JPanel();
 		preImagePanel.setOpaque( false ) ;
@@ -151,12 +151,12 @@ public class MainFrame extends JFrame {
 		lblPreImage.setBounds(39, 37, 145, 107);
 		preImagePanel.add(lblPreImage);
 
-		blankPanel_2 = new JPanel();
-		blankPanel_2.setOpaque( false ) ;
-		blankPanel_2.setBackground(Color.WHITE);
-		blankPanel_2.setBounds(289, 21, 233, 177);
+		blankPanel_2 = new BlankPanel();
+		//blankPanel_2.setOpaque( false ) ;
+		//blankPanel_2.setBackground(Color.WHITE);
+		//blankPanel_2.setBounds(289, 21, 233, 177);
 		//contentPane.add(blankPanel_2);
-		blankPanel_2.setLayout(null);
+		//blankPanel_2.setLayout(null);
 
 		postImagePanel = new JPanel();
 		postImagePanel.setOpaque( false ) ;
@@ -231,7 +231,7 @@ public class MainFrame extends JFrame {
 	}
 
 	//タイマースタートアクション
-	private class SwingAction_1 extends AbstractAction {
+	public class SwingAction_1 extends AbstractAction {
 		public SwingAction_1() {
 			putValue(NAME, "本番");
 			putValue(SHORT_DESCRIPTION, "Some short description");
@@ -241,7 +241,7 @@ public class MainFrame extends JFrame {
     		panelHeight = contentPane.getHeight();
 
 			itr = 0;
-			subjectNum = Integer.parseInt(comboBox.getSelectedItem().toString());
+			subjectNum = Integer.parseInt(loginPanel.comboBox.getSelectedItem().toString());
 
 
 			try {
@@ -406,7 +406,7 @@ public class MainFrame extends JFrame {
     }
 
 	//Next
-		private class SwingAction_2 extends AbstractAction {
+		public class SwingAction_2 extends AbstractAction {
 			public SwingAction_2() {
 				putValue(NAME, "次の問題へ");
 				putValue(SHORT_DESCRIPTION, "Some short description");
