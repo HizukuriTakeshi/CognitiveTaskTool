@@ -18,7 +18,6 @@ public class RestingPanel extends JPanel {
 		setBackground(Color.WHITE);
 		Action nextAction = mainFrame.nextAction;
 
-
 		btnNext = new JButton("次へ");
 		btnNext.setAction(nextAction);
 

@@ -59,6 +59,7 @@ public class MainFrame extends JFrame {
 	private JLabel lblPostimage;
 	private JLabel lblAnnotation;
 	// private JButton btnNext;
+	private ScorePanel scorePanel;
 
 	//File Operation
 	private String currentDirectry;
@@ -102,9 +103,29 @@ public class MainFrame extends JFrame {
 	//task information
 	List<Integer> taskOrder;
 
+	//score caliculate
+	public long totaltime;
+	public long getTotaltime() {
+		return totaltime;
+	}
+
+	public void setTotaltime(long totaltime) {
+		this.totaltime = totaltime;
+	}
+
+	public int getCorrectAnsNum() {
+		return correctAnsNum;
+	}
+
+	public void setCorrectAnsNum(int correctAnsNum) {
+		this.correctAnsNum = correctAnsNum;
+	}
+
+	public int correctAnsNum;
+
 	public final Action testAction = new SwingAction_1();
 	public final Action nextAction = new SwingAction_2();
-
+	public final Action returnAction = new SwingAction_3();
 	/**
 	 * Launch the application.
 	 */
@@ -229,8 +250,13 @@ public class MainFrame extends JFrame {
 					//ここをなんとかする
 					if(name.get(0).getText() == "None"){
 					tmpClick.setTorf(false);
+					System.out.println("hazure");
+					totaltime+=time;
 					}else{
 					tmpClick.setTorf(true);
+					System.out.println("seikai");
+					totaltime+=time;
+					correctAnsNum++;
 					}
 					tmpClick.setX(e.getX()-padding_x);
 					tmpClick.setX(e.getY());
@@ -249,7 +275,6 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				System.out.println("seikai");
-
 				limitTimer.stop();
 
 				contentPane.remove(postImagePanel);
@@ -260,6 +285,8 @@ public class MainFrame extends JFrame {
 
 				long time = end - start;
 				System.out.println(time + "ms");
+				totaltime+=time;
+				correctAnsNum++;
 
 				tmpClick = new Click();
 				tmpClick.setTime(time);
@@ -288,7 +315,7 @@ public class MainFrame extends JFrame {
 		// btnNext.setBounds(55, 85, 117, 29);
 		// restingPanel.add(btnNext);
 
-
+		scorePanel = new ScorePanel(this);
 
 		ActionListener action = new PanelChangerLogToBlank1();
 		timer = new Timer(0, action);
@@ -309,6 +336,8 @@ public class MainFrame extends JFrame {
 			panelHeight = contentPane.getHeight();
 
 			itr = 0;
+			totaltime = 1;
+			correctAnsNum = 0;
 			subjectID = Integer.parseInt(loginPanel.comboBox.getSelectedItem().toString());
 
 
@@ -514,7 +543,7 @@ public class MainFrame extends JFrame {
 			clicks = null;
 			clicks = new ArrayList<Click>();
 			itr++;
-			if (itr <= 2/*tasks.size()*/) {
+			if (itr < 1/*tasks.size()*/) {
 				ActionListener action = new PanelChangerRestToBlank1();
 				timer = new Timer(0, action);
 				timer.setRepeats(false);
@@ -523,7 +552,10 @@ public class MainFrame extends JFrame {
 				timer.restart();
 			} else {
 				itr = 0;
-				ActionListener action = new PanelChangerRestToLog();
+				scorePanel.changeScoreText(totaltime,correctAnsNum);
+
+				ActionListener action = new PanelChangerRestToScore();
+				System.out.println(correctAnsNum);
 				timer = new Timer(0, action);
 				timer.restart();
 
@@ -553,4 +585,42 @@ public class MainFrame extends JFrame {
 			SwingUtilities.updateComponentTreeUI(contentPane);
 		}
 	}
+
+	class PanelChangerRestToScore implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			timer.stop();
+
+			contentPane.remove(restingPanel);
+			contentPane.add(scorePanel);
+			SwingUtilities.updateComponentTreeUI(contentPane);
+		}
+	}
+
+	public class SwingAction_3 extends AbstractAction {
+		public SwingAction_3() {
+			putValue(NAME, "タイトル画面へ");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+
+				ActionListener action = new PanelChangerScoreToLog();
+				timer = new Timer(0, action);
+				timer.restart();
+
+		}
+	}
+
+	class PanelChangerScoreToLog implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			timer.stop();
+
+			contentPane.remove(scorePanel);
+			contentPane.add(loginPanel);
+			SwingUtilities.updateComponentTreeUI(contentPane);
+		}
+	}
+
 }
