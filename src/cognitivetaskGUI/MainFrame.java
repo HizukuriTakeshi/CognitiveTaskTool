@@ -11,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,6 +97,7 @@ public class MainFrame extends JFrame {
 	List<Node> yminNode;
 	List<Node> xmaxNode;
 	List<Node> ymaxNode;
+	List<Node> name;
 
 	//task information
 	List<Integer> taskOrder;
@@ -224,7 +227,11 @@ public class MainFrame extends JFrame {
 					tmpClick = new Click();
 					tmpClick.setTime(time);
 					//ここをなんとかする
+					if(name.get(0).getText() == "None"){
 					tmpClick.setTorf(false);
+					}else{
+					tmpClick.setTorf(true);
+					}
 					tmpClick.setX(e.getX()-padding_x);
 					tmpClick.setX(e.getY());
 
@@ -418,10 +425,12 @@ public class MainFrame extends JFrame {
 
 			try {
 				Document document = reader.read(currentDirectry + "/DataSet/" + currentTaskID + "/Post_" + currentTaskID + ".xml");
+
 				xminNode = document.selectNodes("annotation/object/bndbox/xmin");
 				yminNode = document.selectNodes("annotation/object/bndbox/ymin");
 				xmaxNode = document.selectNodes("annotation/object/bndbox/xmax");
 				ymaxNode = document.selectNodes("annotation/object/bndbox/ymax");
+				name = document.selectNodes("annotation/object/name");
 			} catch (DocumentException ea) {
 				ea.printStackTrace();
 			}
@@ -522,6 +531,13 @@ public class MainFrame extends JFrame {
 				result.setTasks(tasks);
 				//XML出力
 				JAXB.marshal(result, System.out);
+
+				try {
+					JAXB.marshal(result, new FileOutputStream(currentDirectry+"/Result/subuject_"+subjectID+".xml"));
+				} catch (FileNotFoundException ea) {
+					// TODO Auto-generated catch block
+					ea.printStackTrace();
+				}
 			}
 
 		}

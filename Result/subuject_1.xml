@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<result>
+    <subjectID>1</subjectID>
+    <tasks>
+        <taskID>0</taskID>
+        <clicks>
+            <time>714</time>
+            <torf>true</torf>
+            <x>59</x>
+            <y>0</y>
+        </clicks>
+    </tasks>
+    <tasks>
+        <taskID>2</taskID>
+        <clicks>
+            <time>409</time>
+            <torf>true</torf>
+            <x>49</x>
+            <y>0</y>
+        </clicks>
+    </tasks>
+    <tasks>
+        <taskID>1</taskID>
+        <clicks>
+            <time>893</time>
+            <torf>true</torf>
+            <x>434</x>
+            <y>0</y>
+        </clicks>
+    </tasks>
+</result>
