@@ -43,16 +43,16 @@ public class ScorePanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(272)
-					.addComponent(label, GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+					.addComponent(label, GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
 					.addGap(310))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(419)
-					.addComponent(btnReturn, GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+					.addComponent(btnReturn, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
 					.addGap(427))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(61)
-					.addComponent(label_1, GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE)
-					.addGap(0))
+					.addComponent(label_1, GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
+					.addGap(117))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -70,7 +70,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	public void changeScoreText(long totaltime, int correctAnsNum){
-		label_1.setText(totaltime/correctAnsNum +"点");
+		label_1.setText(totaltime/correctAnsNum/1000 +"点");
 	}
 
 }

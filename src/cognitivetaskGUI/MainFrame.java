@@ -383,7 +383,7 @@ public class MainFrame extends JFrame {
 			SwingUtilities.updateComponentTreeUI(contentPane);
 
 			ActionListener action = new PanelChangeBlank1ToPreImage();
-			timer = new Timer(1000, action);
+			timer = new Timer(intervalTime, action);
 			timer.setRepeats(false);
 			timer.restart();
 		}
@@ -421,7 +421,7 @@ public class MainFrame extends JFrame {
 			SwingUtilities.updateComponentTreeUI(contentPane);
 
 			ActionListener action = new PanelChangePreImageToBlank2();
-			timer = new Timer(intervalTime, action);
+			timer = new Timer(showTime, action);
 			timer.setRepeats(false);
 			timer.restart();
 
@@ -433,12 +433,12 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			timer.stop();
 
+
 			contentPane.remove(preImagePanel);
 			contentPane.add(blankPanel_2);
 			SwingUtilities.updateComponentTreeUI(contentPane);
-
 			ActionListener action = new PanelChangeBlank2ToPostImage();
-			timer = new Timer(showTime, action);
+			timer = new Timer(intervalTime, action);
 			timer.setRepeats(false);
 			timer.restart();
 
@@ -543,7 +543,10 @@ public class MainFrame extends JFrame {
 			clicks = null;
 			clicks = new ArrayList<Click>();
 			itr++;
-			if (itr < 1/*tasks.size()*/) {
+			System.out.println(itr);
+			System.out.println(taskOrder.size());
+			System.out.println(itr < taskOrder.size());
+			if (itr < tasks.size()) {
 				ActionListener action = new PanelChangerRestToBlank1();
 				timer = new Timer(0, action);
 				timer.setRepeats(false);
@@ -555,7 +558,7 @@ public class MainFrame extends JFrame {
 				scorePanel.changeScoreText(totaltime,correctAnsNum);
 
 				ActionListener action = new PanelChangerRestToScore();
-				System.out.println(correctAnsNum);
+				System.out.println("correctAnsNum:"+correctAnsNum);
 				timer = new Timer(0, action);
 				timer.restart();
 
