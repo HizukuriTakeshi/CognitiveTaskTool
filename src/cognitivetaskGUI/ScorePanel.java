@@ -70,7 +70,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	public void changeScoreText(long totaltime, int correctAnsNum){
-		label_1.setText(totaltime/correctAnsNum/1000 +"点");
+		label_1.setText(totaltime/correctAnsNum/10 +"点");
 	}
 
 }
