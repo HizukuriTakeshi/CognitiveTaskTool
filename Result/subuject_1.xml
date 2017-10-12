@@ -4,9 +4,18 @@
     <tasks>
         <taskID>0</taskID>
         <clicks>
-            <time>719</time>
+            <time>1550</time>
             <torf>true</torf>
-            <x>67</x>
+            <x>68</x>
+            <y>0</y>
+        </clicks>
+    </tasks>
+    <tasks>
+        <taskID>2</taskID>
+        <clicks>
+            <time>2089</time>
+            <torf>true</torf>
+            <x>62</x>
             <y>0</y>
         </clicks>
     </tasks>

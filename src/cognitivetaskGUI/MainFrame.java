@@ -545,8 +545,8 @@ public class MainFrame extends JFrame {
 			itr++;
 			System.out.println(itr);
 			System.out.println(taskOrder.size());
-			System.out.println(itr < taskOrder.size());
-			if (itr < taskOrder.size()) {
+			System.out.println(itr < 2/*taskOrder.size()*/);
+			if (itr < 2/*taskOrder.size()*/) {
 				ActionListener action = new PanelChangerRestToBlank1();
 				timer = new Timer(0, action);
 				timer.setRepeats(false);
