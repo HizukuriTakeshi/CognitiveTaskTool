@@ -1,6 +1,8 @@
 //package src.cognitivetask;
 package cognitivetaskGUI;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -109,6 +111,12 @@ public class MainFrame extends JFrame {
 		return totaltime;
 	}
 
+	//music
+	AudioClip correct = null;
+	AudioClip incorrect = null;
+
+
+
 	public void setTotaltime(long totaltime) {
 		this.totaltime = totaltime;
 	}
@@ -146,6 +154,10 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		correct = Applet.newAudioClip(getClass().getResource("Quiz-Correct_Answer02-1 (online-audio-converter.com).wav"));
+		incorrect = Applet.newAudioClip(getClass().getResource("Quiz-Wrong_Buzzer02-1 (online-audio-converter.com).wav"));
+
+
 		currentDirectry = new File(".").getAbsoluteFile().getParent();
 		System.out.println(currentDirectry);
 
@@ -221,6 +233,7 @@ public class MainFrame extends JFrame {
 				int btn = e.getButton();
 				if (btn == MouseEvent.BUTTON1) {
 					System.out.println("hazure");
+					incorrect.play();
 					end = System.currentTimeMillis();
 					long time = end - start;
 					System.out.println(time + "ms");
@@ -251,10 +264,14 @@ public class MainFrame extends JFrame {
 					if(name.get(0).getText() == "None"){
 					tmpClick.setTorf(false);
 					System.out.println("hazure");
+					incorrect.play();
 					totaltime+=time;
 					}else{
 					tmpClick.setTorf(true);
 					System.out.println("seikai");
+
+					correct.play();
+
 					totaltime+=time;
 					correctAnsNum++;
 					}
@@ -275,8 +292,9 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				System.out.println("seikai");
-				limitTimer.stop();
 
+				limitTimer.stop();
+				correct.play();
 				contentPane.remove(postImagePanel);
 				contentPane.add(restingPanel);
 				SwingUtilities.updateComponentTreeUI(contentPane);
