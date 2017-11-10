@@ -18,6 +18,7 @@ public class LoginPanel extends JPanel {
 	public JComboBox<Object> comboBox;
 	private JButton btnPractice;
 	private JButton btnProduction;
+	public JComboBox<Object> comboBox_1;
 
 
 
@@ -40,19 +41,25 @@ public class LoginPanel extends JPanel {
 
 		btnProduction = new JButton("本番");
 		btnProduction.setAction(productionAction);
+
+		comboBox_1 = new JComboBox<Object>();
+		comboBox_1.setModel(new DefaultComboBoxModel<Object>(new String[] {"1", "2", "3"}));
+
+
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(160)
-					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
 					.addGap(141))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(299)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnProduction, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-						.addComponent(btnPractice, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
-						.addComponent(comboBox, 0, 245, Short.MAX_VALUE))
+						.addComponent(comboBox_1, Alignment.LEADING, 0, 256, Short.MAX_VALUE)
+						.addComponent(comboBox, 0, 256, Short.MAX_VALUE)
+						.addComponent(btnPractice, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+						.addComponent(btnProduction, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
 					.addGap(282))
 		);
 		groupLayout.setVerticalGroup(
@@ -60,11 +67,13 @@ public class LoginPanel extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(95)
 					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-					.addGap(93)
+					.addGap(65)
 					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(30)
+					.addGap(18)
+					.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(29)
 					.addComponent(btnPractice)
-					.addGap(45)
+					.addGap(29)
 					.addComponent(btnProduction)
 					.addGap(115))
 		);

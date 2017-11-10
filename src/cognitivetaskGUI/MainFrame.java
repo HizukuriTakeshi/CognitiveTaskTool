@@ -66,6 +66,7 @@ public class MainFrame extends JFrame {
 	//File Operation
 	private String currentDirectry;
 	private int subjectID;
+	private int partNum;
 	private int itr;
 
 	//XML io
@@ -84,7 +85,7 @@ public class MainFrame extends JFrame {
 	final private int intervalTime = 1000;
 	final private int showTime = 2000;
 	private Timer limitTimer;
-	final private int limitTime = 30000;
+	final private int limitTime = 10000;
 
 	long start;
 	long end;
@@ -357,11 +358,12 @@ public class MainFrame extends JFrame {
 			totaltime = 1;
 			correctAnsNum = 0;
 			subjectID = Integer.parseInt(loginPanel.comboBox.getSelectedItem().toString());
+			partNum = Integer.parseInt(loginPanel.comboBox_1.getSelectedItem().toString());
 
 
 
 			try {
-				File f = new File(currentDirectry + "/subject/subject_" + subjectID + ".csv");
+				File f = new File(currentDirectry + "/subject/subject_" + subjectID + "_"+ + partNum+".csv");
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
 				taskOrder = new ArrayList<Integer>();
@@ -417,7 +419,7 @@ public class MainFrame extends JFrame {
 
 			timer.stop();
 
-			ImageIcon preImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/pre_" + currentTaskID + ".png");
+			ImageIcon preImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/pre_" + currentTaskID + ".jpg");
 
 			float maxSize = Math.max(preImage.getIconHeight(), preImage.getIconWidth());
 			mag = (float) (Math.min(panelWidth, panelHeight)) / maxSize;
@@ -488,7 +490,7 @@ public class MainFrame extends JFrame {
 			int ymax = Integer.parseInt(ymaxNode.get(0).getText());
 
 			//System.out.println(currentDirectry + "/DataSet/" + itr + "/post_" + itr + ".png");
-			ImageIcon postImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/post_" + currentTaskID + ".png");
+			ImageIcon postImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/post_" + currentTaskID + ".jpg");
 
 			Image smallPostImage = postImage.getImage().getScaledInstance((int) (mag * postImage.getIconWidth()),
 					(int) (mag * postImage.getIconHeight()), Image.SCALE_SMOOTH);
