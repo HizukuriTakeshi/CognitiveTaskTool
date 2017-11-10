@@ -588,7 +588,7 @@ public class MainFrame extends JFrame {
 				JAXB.marshal(result, System.out);
 
 				try {
-					JAXB.marshal(result, new FileOutputStream(currentDirectry+"/Result/subuject_"+subjectID+".xml"));
+					JAXB.marshal(result, new FileOutputStream(currentDirectry+"/Result/subuject_"+subjectID+"_"+partNum+".xml"));
 				} catch (FileNotFoundException ea) {
 					// TODO Auto-generated catch block
 					ea.printStackTrace();
