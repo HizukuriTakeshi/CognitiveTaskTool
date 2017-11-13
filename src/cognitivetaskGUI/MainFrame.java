@@ -133,6 +133,7 @@ public class MainFrame extends JFrame {
 	public int correctAnsNum;
 
 	public final Action testAction = new SwingAction_1();
+	public final Action pracAction = new SwingAction_0();
 	public final Action nextAction = new SwingAction_2();
 	public final Action returnAction = new SwingAction_3();
 	/**
@@ -342,6 +343,57 @@ public class MainFrame extends JFrame {
 
 	}
 
+	public class SwingAction_0 extends AbstractAction {
+		public SwingAction_0() {
+			putValue(NAME, "練習");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			//ウィンドウサイズ取得
+			panelWidth = contentPane.getWidth();
+			panelHeight = contentPane.getHeight();
+
+			itr = 0;
+			totaltime = 1;
+			correctAnsNum = 0;
+			subjectID = 0;
+			partNum = 0;
+
+
+
+			try {
+				File f = new File(currentDirectry + "/subject/practice.csv");
+				BufferedReader br = new BufferedReader(new FileReader(f));
+
+				taskOrder = new ArrayList<Integer>();
+				String line = br.readLine();
+				while (line != null) {
+					taskOrder.add(Integer.parseInt(line));
+					line = br.readLine();
+				}
+				br.close();
+
+				// CSVから読み込んだ配列の中身を表示
+				// for (int j = 0; j < tasks.size(); j++) {
+				// System.out.println(tasks.get(j));
+				// }
+
+			} catch (IOException ea) {
+				System.out.println(ea);
+			}
+
+			//結果出力用のクラスインスタンス
+			result = new Result();
+			result.setSubjectID(subjectID);
+			tasks = new ArrayList<Task>();
+			clicks = new ArrayList<Click>();
+
+			timer.restart();
+		}
+	}
+
+
 	// タイマースタートアクション
 	public class SwingAction_1 extends AbstractAction {
 		public SwingAction_1() {
@@ -420,6 +472,7 @@ public class MainFrame extends JFrame {
 			timer.stop();
 
 			ImageIcon preImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/pre_" + currentTaskID + ".jpg");
+			System.out.println("koko"+currentTaskID);
 
 			float maxSize = Math.max(preImage.getIconHeight(), preImage.getIconWidth());
 			mag = (float) (Math.min(panelWidth, panelHeight)) / maxSize;
@@ -565,8 +618,8 @@ public class MainFrame extends JFrame {
 			itr++;
 			System.out.println(itr);
 			System.out.println(taskOrder.size());
-			System.out.println(itr < 2/*taskOrder.size()*/);
-			if (itr < 2/*taskOrder.size()*/) {
+			System.out.println(itr < taskOrder.size());
+			if (itr < taskOrder.size()) {
 				ActionListener action = new PanelChangerRestToBlank1();
 				timer = new Timer(0, action);
 				timer.setRepeats(false);

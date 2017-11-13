@@ -26,11 +26,11 @@ public class ScorePanel extends JPanel {
 
 
 
-		label = new JLabel("あなたの得点は");
+		label = new JLabel("あなたの結果は");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Lucida Grande", Font.PLAIN, 50));
 
-		label_1 = new JLabel(0 +"点です");
+		label_1 = new JLabel(0 +"問  正解です");
 		label_1.setHorizontalAlignment(SwingConstants.CENTER);
 
 		label_1.setFont(new Font("Lucida Grande", Font.PLAIN, 99));
@@ -70,7 +70,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	public void changeScoreText(long totaltime, int correctAnsNum){
-		label_1.setText(totaltime/correctAnsNum/10 +"点");
+		label_1.setText(correctAnsNum+"/40問 正解です．");
 	}
 
 }

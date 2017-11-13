@@ -30,6 +30,7 @@ public class LoginPanel extends JPanel {
 
 
 		Action productionAction = mainFrame.testAction;
+		Action practiceAction = mainFrame.pracAction;
 
 		lblNewLabel = new JLabel("視覚的認知課題");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 75));
@@ -38,6 +39,7 @@ public class LoginPanel extends JPanel {
 		comboBox.setModel(new DefaultComboBoxModel<Object>(new String[] {"1", "2", "3", "4", "5"}));
 
 		btnPractice = new JButton("練習");
+		btnPractice.setAction(practiceAction);
 
 		btnProduction = new JButton("本番");
 		btnProduction.setAction(productionAction);
