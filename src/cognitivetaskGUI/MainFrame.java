@@ -17,7 +17,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -42,7 +45,7 @@ import xmlUtility.Task;
 
 public class MainFrame extends JFrame {
 
-	//Compornent
+	// Compornent
 	private JPanel contentPane;
 	// private JPanel loginPanel;
 	private LoginPanel loginPanel;
@@ -63,24 +66,23 @@ public class MainFrame extends JFrame {
 	// private JButton btnNext;
 	private ScorePanel scorePanel;
 
-	//File Operation
+	// File Operation
 	private String currentDirectry;
 	private int subjectID;
 	private int partNum;
 	private int itr;
 
-	//XML io
+	// XML io
 	private Result result;
 	private List<Task> tasks;
 	private Task tmpTask;
 	private List<Click> clicks;
 	private Click tmpClick;
 
-	//Task
+	// Task
 	private int currentTaskID;
 
-
-	//Time controll
+	// Time controll
 	private Timer timer;
 	final private int intervalTime = 1000;
 	final private int showTime = 2000;
@@ -90,7 +92,7 @@ public class MainFrame extends JFrame {
 	long start;
 	long end;
 
-	//Panel Size
+	// Panel Size
 	private int panelWidth;
 	private int panelHeight;
 	private float mag;
@@ -103,20 +105,19 @@ public class MainFrame extends JFrame {
 	List<Node> ymaxNode;
 	List<Node> name;
 
-	//task information
+	// task information
 	List<Integer> taskOrder;
 
-	//score caliculate
+	// score caliculate
 	public long totaltime;
+
 	public long getTotaltime() {
 		return totaltime;
 	}
 
-	//music
+	// music
 	AudioClip correct = null;
 	AudioClip incorrect = null;
-
-
 
 	public void setTotaltime(long totaltime) {
 		this.totaltime = totaltime;
@@ -136,6 +137,7 @@ public class MainFrame extends JFrame {
 	public final Action pracAction = new SwingAction_0();
 	public final Action nextAction = new SwingAction_2();
 	public final Action returnAction = new SwingAction_3();
+
 	/**
 	 * Launch the application.
 	 */
@@ -156,9 +158,10 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
-		correct = Applet.newAudioClip(getClass().getResource("Quiz-Correct_Answer02-1 (online-audio-converter.com).wav"));
-		incorrect = Applet.newAudioClip(getClass().getResource("Quiz-Wrong_Buzzer02-1 (online-audio-converter.com).wav"));
-
+		correct = Applet
+				.newAudioClip(getClass().getResource("Quiz-Correct_Answer02-1 (online-audio-converter.com).wav"));
+		incorrect = Applet
+				.newAudioClip(getClass().getResource("Quiz-Wrong_Buzzer02-1 (online-audio-converter.com).wav"));
 
 		currentDirectry = new File(".").getAbsoluteFile().getParent();
 		System.out.println(currentDirectry);
@@ -232,24 +235,9 @@ public class MainFrame extends JFrame {
 		postImagePanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				// 4−4マス外を押させるようにする
 				int btn = e.getButton();
-				if (btn == MouseEvent.BUTTON1) {
-					System.out.println("hazure");
-					incorrect.play();
-					end = System.currentTimeMillis();
-					long time = end - start;
-					System.out.println(time + "ms");
-
-					tmpClick = new Click();
-					tmpClick.setTime(time);
-					tmpClick.setTorf(false);
-					tmpClick.setX(e.getX()-padding_x);
-					tmpClick.setX(e.getY());
-
-
-					clicks.add(tmpClick);
-				} else if (btn == MouseEvent.BUTTON3) {
-
+				if (e.getX() <= padding_x || e.getX() >= panelWidth - padding_x) {
 					limitTimer.stop();
 
 					contentPane.remove(postImagePanel);
@@ -257,32 +245,51 @@ public class MainFrame extends JFrame {
 					SwingUtilities.updateComponentTreeUI(contentPane);
 
 					end = System.currentTimeMillis();
-					long time = end - start;
+					// long time = end - start;
+					long time = end;
 					System.out.println(time + "ms");
 
 					tmpClick = new Click();
 					tmpClick.setTime(time);
-					//ここをなんとかする
-					if(!name.get(0).getText().equals("None")){
-					tmpClick.setTorf(false);
-					System.out.println(name.get(0).getText());
-					System.out.println("hhazure");
-					incorrect.play();
-					totaltime+=time;
-					}else{
-					tmpClick.setTorf(true);
-					System.out.println("sseikai");
+					// ここをなんとかする
+					if (!name.get(0).getText().equals("None")) {
+						tmpClick.setTorf(false);
+						System.out.println(name.get(0).getText());
+						System.out.println("hhazure");
+						incorrect.play();
+						// totaltime += time;
+						tmpTask.setEndPostTime(System.currentTimeMillis());
+					} else {
+						tmpClick.setTorf(true);
+						System.out.println("sseikai");
 
-					correct.play();
+						correct.play();
 
-					totaltime+=time;
-					correctAnsNum++;
+						// totaltime += time;
+						correctAnsNum++;
+						tmpTask.setEndPostTime(System.currentTimeMillis());
 					}
-					tmpClick.setX(e.getX()-padding_x);
+					tmpClick.setX(e.getX() - padding_x);
 					tmpClick.setX(e.getY());
 
-
 					clicks.add(tmpClick);
+
+				} else if (btn == MouseEvent.BUTTON1) {
+					System.out.println("hazure");
+					incorrect.play();
+					end = System.currentTimeMillis();
+					long time = end;
+					Date date = new Date(time);
+					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+					System.out.println(formatter.format(date));
+
+					tmpClick = new Click();
+					tmpClick.setTime(time);
+					tmpClick.setTorf(false);
+					tmpClick.setX(e.getX() - padding_x);
+					tmpClick.setX(e.getY());
+					clicks.add(tmpClick);
+				} else if (btn == MouseEvent.BUTTON3) {
 
 				}
 			}
@@ -303,18 +310,19 @@ public class MainFrame extends JFrame {
 				SwingUtilities.updateComponentTreeUI(contentPane);
 
 				end = System.currentTimeMillis();
+				tmpTask.setEndPostTime(System.currentTimeMillis());
 
-				long time = end - start;
+				//long time = end - start;
+				long time = end;
 				System.out.println(time + "ms");
-				totaltime+=time;
+				//totaltime += time;
 				correctAnsNum++;
 
 				tmpClick = new Click();
 				tmpClick.setTime(time);
 				tmpClick.setTorf(true);
-				tmpClick.setX(e.getX()-padding_x);
+				tmpClick.setX(e.getX() - padding_x);
 				tmpClick.setX(e.getY());
-
 
 				clicks.add(tmpClick);
 			}
@@ -351,7 +359,7 @@ public class MainFrame extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			//ウィンドウサイズ取得
+			// ウィンドウサイズ取得
 			panelWidth = contentPane.getWidth();
 			panelHeight = contentPane.getHeight();
 
@@ -361,10 +369,8 @@ public class MainFrame extends JFrame {
 			subjectID = 0;
 			partNum = 0;
 
-
-
 			try {
-				File f = new File(currentDirectry + "/subject/practice2.csv");
+				File f = new File(currentDirectry + "/subject/practice.csv");
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
 				taskOrder = new ArrayList<Integer>();
@@ -384,7 +390,7 @@ public class MainFrame extends JFrame {
 				System.out.println(ea);
 			}
 
-			//結果出力用のクラスインスタンス
+			// 結果出力用のクラスインスタンス
 			result = new Result();
 			result.setSubjectID(subjectID);
 			tasks = new ArrayList<Task>();
@@ -394,7 +400,6 @@ public class MainFrame extends JFrame {
 		}
 	}
 
-
 	// タイマースタートアクション
 	public class SwingAction_1 extends AbstractAction {
 		public SwingAction_1() {
@@ -403,7 +408,7 @@ public class MainFrame extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			//ウィンドウサイズ取得
+			// ウィンドウサイズ取得
 			panelWidth = contentPane.getWidth();
 			panelHeight = contentPane.getHeight();
 
@@ -413,10 +418,8 @@ public class MainFrame extends JFrame {
 			subjectID = Integer.parseInt(loginPanel.comboBox.getSelectedItem().toString());
 			partNum = Integer.parseInt(loginPanel.comboBox_1.getSelectedItem().toString());
 
-
-
 			try {
-				File f = new File(currentDirectry + "/subject/subject_" + subjectID + "_"+ + partNum+".csv");
+				File f = new File(currentDirectry + "/subject/subject_" + subjectID + "_" + +partNum + ".csv");
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
 				taskOrder = new ArrayList<Integer>();
@@ -436,7 +439,7 @@ public class MainFrame extends JFrame {
 				System.out.println(ea);
 			}
 
-			//結果出力用のクラスインスタンス
+			// 結果出力用のクラスインスタンス
 			result = new Result();
 			result.setSubjectID(subjectID);
 			tasks = new ArrayList<Task>();
@@ -469,11 +472,13 @@ public class MainFrame extends JFrame {
 			tmpTask = new Task();
 			tmpTask.setTaskID(currentTaskID);
 
-
 			timer.stop();
+			tmpTask.setStartPreTime(System.currentTimeMillis());
+			System.out.println("pre画像");
 
-			ImageIcon preImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/pre_" + currentTaskID + ".jpg");
-			System.out.println("koko"+currentTaskID);
+			ImageIcon preImage = new ImageIcon(
+					currentDirectry + "/DataSet/" + currentTaskID + "/pre_" + currentTaskID + ".jpg");
+			System.out.println("koko" + currentTaskID);
 
 			float maxSize = Math.max(preImage.getIconHeight(), preImage.getIconWidth());
 			mag = (float) (Math.min(panelWidth, panelHeight)) / maxSize;
@@ -507,7 +512,8 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			timer.stop();
 
-
+			tmpTask.setEndPreTime(System.currentTimeMillis());
+			System.out.println("pre画像終了");
 			contentPane.remove(preImagePanel);
 			contentPane.add(blankPanel_2);
 			SwingUtilities.updateComponentTreeUI(contentPane);
@@ -527,7 +533,8 @@ public class MainFrame extends JFrame {
 			SAXReader reader = new SAXReader();
 
 			try {
-				Document document = reader.read(currentDirectry + "/DataSet/" + currentTaskID + "/Post_" + currentTaskID + ".xml");
+				Document document = reader
+						.read(currentDirectry + "/DataSet/" + currentTaskID + "/Post_" + currentTaskID + ".xml");
 
 				xminNode = document.selectNodes("annotation/object/bndbox/xmin");
 				yminNode = document.selectNodes("annotation/object/bndbox/ymin");
@@ -543,8 +550,10 @@ public class MainFrame extends JFrame {
 			int xmax = Integer.parseInt(xmaxNode.get(0).getText());
 			int ymax = Integer.parseInt(ymaxNode.get(0).getText());
 
-			//System.out.println(currentDirectry + "/DataSet/" + itr + "/post_" + itr + ".png");
-			ImageIcon postImage = new ImageIcon(currentDirectry + "/DataSet/" + currentTaskID + "/post_" + currentTaskID + ".jpg");
+			// System.out.println(currentDirectry + "/DataSet/" + itr + "/post_"
+			// + itr + ".png");
+			ImageIcon postImage = new ImageIcon(
+					currentDirectry + "/DataSet/" + currentTaskID + "/post_" + currentTaskID + ".jpg");
 
 			Image smallPostImage = postImage.getImage().getScaledInstance((int) (mag * postImage.getIconWidth()),
 					(int) (mag * postImage.getIconHeight()), Image.SCALE_SMOOTH);
@@ -557,7 +566,9 @@ public class MainFrame extends JFrame {
 
 			lblAnnotation.setBounds((int) (xmin * mag) + padding_x, (int) (ymin * mag), (int) ((xmax - xmin) * mag),
 					(int) ((ymax - ymin) * mag));
-			//System.out.println((int) (xmin * mag) + padding_x + " " + (int) (ymin * mag) + " "+ (int) ((xmax - xmin) * mag) + " " + (int) ((ymax - ymin) * mag));
+			// System.out.println((int) (xmin * mag) + padding_x + " " + (int)
+			// (ymin * mag) + " "+ (int) ((xmax - xmin) * mag) + " " + (int)
+			// ((ymax - ymin) * mag));
 			postImagePanel.add(lblAnnotation);
 
 			SwingUtilities.updateComponentTreeUI(postImagePanel);
@@ -568,6 +579,8 @@ public class MainFrame extends JFrame {
 
 			// stopwatchスタート
 			start = System.currentTimeMillis();
+			tmpTask.setStartPostTime(System.currentTimeMillis());
+			System.out.println("post画像開始");
 
 			// 制限時間スタート
 			ActionListener action = new PanelChangerPostImageToRest();
@@ -579,6 +592,8 @@ public class MainFrame extends JFrame {
 	class PanelChangerPostImageToRest implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			tmpTask.setEndPostTime(System.currentTimeMillis());
+			System.out.println("post終了");
 			limitTimer.stop();
 
 			contentPane.remove(postImagePanel);
@@ -625,24 +640,24 @@ public class MainFrame extends JFrame {
 				timer = new Timer(0, action);
 				timer.setRepeats(false);
 
-				//System.out.println("next");
+				// System.out.println("next");
 				timer.restart();
 			} else {
 				itr = 0;
-				scorePanel.changeScoreText(totaltime,correctAnsNum);
+				scorePanel.changeScoreText(totaltime, correctAnsNum);
 
 				ActionListener action = new PanelChangerRestToScore();
-				System.out.println("correctAnsNum:"+correctAnsNum);
+				System.out.println("correctAnsNum:" + correctAnsNum);
 				timer = new Timer(0, action);
 				timer.restart();
 
-
 				result.setTasks(tasks);
-				//XML出力
+				// XML出力
 				JAXB.marshal(result, System.out);
 
 				try {
-					JAXB.marshal(result, new FileOutputStream(currentDirectry+"/Result/subuject_"+subjectID+"_"+partNum+".xml"));
+					JAXB.marshal(result, new FileOutputStream(
+							currentDirectry + "/Result/subuject_" + subjectID + "_" + partNum + ".xml"));
 				} catch (FileNotFoundException ea) {
 					// TODO Auto-generated catch block
 					ea.printStackTrace();
@@ -682,9 +697,9 @@ public class MainFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 
-				ActionListener action = new PanelChangerScoreToLog();
-				timer = new Timer(0, action);
-				timer.restart();
+			ActionListener action = new PanelChangerScoreToLog();
+			timer = new Timer(0, action);
+			timer.restart();
 
 		}
 	}
