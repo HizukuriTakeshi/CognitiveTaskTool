@@ -263,14 +263,15 @@ public class MainFrame extends JFrame {
 					tmpClick = new Click();
 					tmpClick.setTime(time);
 					//ここをなんとかする
-					if(name.get(0).getText() == "None"){
+					if(!name.get(0).getText().equals("None")){
 					tmpClick.setTorf(false);
-					System.out.println("hazure");
+					System.out.println(name.get(0).getText());
+					System.out.println("hhazure");
 					incorrect.play();
 					totaltime+=time;
 					}else{
 					tmpClick.setTorf(true);
-					System.out.println("seikai");
+					System.out.println("sseikai");
 
 					correct.play();
 
@@ -363,7 +364,7 @@ public class MainFrame extends JFrame {
 
 
 			try {
-				File f = new File(currentDirectry + "/subject/practice.csv");
+				File f = new File(currentDirectry + "/subject/practice2.csv");
 				BufferedReader br = new BufferedReader(new FileReader(f));
 
 				taskOrder = new ArrayList<Integer>();
