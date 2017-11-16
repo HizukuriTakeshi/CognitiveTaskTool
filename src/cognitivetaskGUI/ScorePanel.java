@@ -17,10 +17,13 @@ public class ScorePanel extends JPanel {
 	private JButton btnReturn;
 
 
+	private MainFrame m;
+
 	/**
 	 * Create the panel.
 	 */
 	public ScorePanel(MainFrame mainFrame) {
+		m = mainFrame;
 		setBackground(Color.WHITE);
 		Action returnAction = mainFrame.returnAction;
 
@@ -36,6 +39,7 @@ public class ScorePanel extends JPanel {
 		label_1.setFont(new Font("Lucida Grande", Font.PLAIN, 99));
 
 		btnReturn = new JButton("タイトルに戻る");
+		btnReturn.setFont(new Font("Lucida Grande", Font.PLAIN, 30));
 		btnReturn.setAction(returnAction);
 
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -70,7 +74,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	public void changeScoreText(long totaltime, int correctAnsNum){
-		label_1.setText(correctAnsNum+"/40問 正解です．");
+		label_1.setText(correctAnsNum+"/"+m.taskOrder.size()+"問 正解です");
 	}
 
 }

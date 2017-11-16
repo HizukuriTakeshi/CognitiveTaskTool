@@ -3,46 +3,40 @@
     <subjectID>0</subjectID>
     <tasks>
         <taskID>-1</taskID>
-        <startPreTime>1510652443724</startPreTime>
-        <endPreTime>1510652445933</endPreTime>
-        <startPostTime>1510652447211</startPostTime>
-        <endPostTime>1510652447923</endPostTime>
+        <startPreTime>1510805059947</startPreTime>
+        <endPreTime>1510805062243</endPreTime>
+        <startPostTime>1510805063575</startPostTime>
+        <endPostTime>1510805064699</endPostTime>
         <clicks>
-            <time>1510652447923</time>
-            <torf>true</torf>
-            <x>85</x>
+            <time>1510805064678</time>
+            <torf>false</torf>
+            <x>494</x>
             <y>0</y>
         </clicks>
     </tasks>
     <tasks>
         <taskID>-2</taskID>
-        <startPreTime>1510652450518</startPreTime>
-        <endPreTime>1510652452671</endPreTime>
-        <startPostTime>1510652453788</startPostTime>
-        <endPostTime>1510652459381</endPostTime>
+        <startPreTime>1510805066272</startPreTime>
+        <endPreTime>1510805068441</endPreTime>
+        <startPostTime>1510805069575</startPostTime>
+        <endPostTime>1510805071543</endPostTime>
         <clicks>
-            <time>1510652455068</time>
-            <torf>false</torf>
-            <x>93</x>
-            <y>0</y>
-        </clicks>
-        <clicks>
-            <time>1510652459378</time>
+            <time>1510805071535</time>
             <torf>true</torf>
-            <x>329</x>
+            <x>426</x>
             <y>0</y>
         </clicks>
     </tasks>
     <tasks>
         <taskID>-3</taskID>
-        <startPreTime>1510652461461</startPreTime>
-        <endPreTime>1510652463582</endPreTime>
-        <startPostTime>1510652464687</startPostTime>
-        <endPostTime>1510652465191</endPostTime>
+        <startPreTime>1510805073297</startPreTime>
+        <endPreTime>1510805075430</endPreTime>
+        <startPostTime>1510805076577</startPostTime>
+        <endPostTime>1510805077859</endPostTime>
         <clicks>
-            <time>1510652465191</time>
+            <time>1510805077859</time>
             <torf>true</torf>
-            <x>53</x>
+            <x>75</x>
             <y>0</y>
         </clicks>
     </tasks>

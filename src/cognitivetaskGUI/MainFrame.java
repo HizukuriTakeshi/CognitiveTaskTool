@@ -5,12 +5,18 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -106,7 +112,7 @@ public class MainFrame extends JFrame {
 	List<Node> name;
 
 	// task information
-	List<Integer> taskOrder;
+	public List<Integer> taskOrder;
 
 	// score caliculate
 	public long totaltime;
@@ -118,6 +124,8 @@ public class MainFrame extends JFrame {
 	// music
 	AudioClip correct = null;
 	AudioClip incorrect = null;
+
+	public int flag = 0;
 
 	public void setTotaltime(long totaltime) {
 		this.totaltime = totaltime;
@@ -158,6 +166,10 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		setUndecorated(true);
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB), new Point(),"");
+		setCursor(cursor);
+
 		correct = Applet
 				.newAudioClip(getClass().getResource("Quiz-Correct_Answer02-1 (online-audio-converter.com).wav"));
 		incorrect = Applet
@@ -168,6 +180,10 @@ public class MainFrame extends JFrame {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 836, 703);
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Rectangle rect = env.getMaximumWindowBounds();
+		setBounds(rect);
+
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -312,10 +328,10 @@ public class MainFrame extends JFrame {
 				end = System.currentTimeMillis();
 				tmpTask.setEndPostTime(System.currentTimeMillis());
 
-				//long time = end - start;
+				// long time = end - start;
 				long time = end;
 				System.out.println(time + "ms");
-				//totaltime += time;
+				// totaltime += time;
 				correctAnsNum++;
 
 				tmpClick = new Click();
@@ -356,6 +372,7 @@ public class MainFrame extends JFrame {
 		public SwingAction_0() {
 			putValue(NAME, "練習");
 			putValue(SHORT_DESCRIPTION, "Some short description");
+			flag = 0;
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -396,6 +413,10 @@ public class MainFrame extends JFrame {
 			tasks = new ArrayList<Task>();
 			clicks = new ArrayList<Click>();
 
+			ActionListener action = new PanelChangerLogToBlank1();
+			timer = new Timer(0, action);
+			timer.setRepeats(false);
+
 			timer.restart();
 		}
 	}
@@ -405,9 +426,11 @@ public class MainFrame extends JFrame {
 		public SwingAction_1() {
 			putValue(NAME, "本番");
 			putValue(SHORT_DESCRIPTION, "Some short description");
+			flag = 1;
 		}
 
 		public void actionPerformed(ActionEvent e) {
+
 			// ウィンドウサイズ取得
 			panelWidth = contentPane.getWidth();
 			panelHeight = contentPane.getHeight();
@@ -444,6 +467,11 @@ public class MainFrame extends JFrame {
 			result.setSubjectID(subjectID);
 			tasks = new ArrayList<Task>();
 			clicks = new ArrayList<Click>();
+
+			ActionListener action = new PanelChangerLogToBlank1();
+			timer = new Timer(0, action);
+			timer.setRepeats(false);
+
 
 			timer.restart();
 		}
@@ -649,6 +677,8 @@ public class MainFrame extends JFrame {
 				ActionListener action = new PanelChangerRestToScore();
 				System.out.println("correctAnsNum:" + correctAnsNum);
 				timer = new Timer(0, action);
+				//新しく入れた
+				timer.setRepeats(false);
 				timer.restart();
 
 				result.setTasks(tasks);
@@ -689,6 +719,7 @@ public class MainFrame extends JFrame {
 		}
 	}
 
+	//returnAction
 	public class SwingAction_3 extends AbstractAction {
 		public SwingAction_3() {
 			putValue(NAME, "タイトル画面へ");
@@ -697,18 +728,18 @@ public class MainFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 
-			ActionListener action = new PanelChangerScoreToLog();
-			timer = new Timer(0, action);
-			timer.restart();
-
+			 ActionListener action_ScoreToLog = new PanelChangerScoreToLog();
+			 timer = new Timer(0, action_ScoreToLog);
+			 timer.setRepeats(false);
+			 timer.restart();
 		}
 	}
 
 	class PanelChangerScoreToLog implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			timer.stop();
 
+			timer.stop();
 			contentPane.remove(scorePanel);
 			contentPane.add(loginPanel);
 			SwingUtilities.updateComponentTreeUI(contentPane);

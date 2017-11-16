@@ -1,6 +1,7 @@
 package cognitivetaskGUI;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.swing.Action;
 import javax.swing.GroupLayout;
@@ -19,6 +20,7 @@ public class RestingPanel extends JPanel {
 		Action nextAction = mainFrame.nextAction;
 
 		btnNext = new JButton("次へ");
+		btnNext.setFont(new Font("Lucida Grande", Font.PLAIN, 50));
 		btnNext.setAction(nextAction);
 
 		GroupLayout groupLayout = new GroupLayout(this);
