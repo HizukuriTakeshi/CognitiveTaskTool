@@ -286,7 +286,7 @@ public class MainFrame extends JFrame {
 						tmpTask.setEndPostTime(System.currentTimeMillis());
 					}
 					tmpClick.setX(e.getX() - padding_x);
-					tmpClick.setX(e.getY());
+					tmpClick.setY(e.getY());
 
 					clicks.add(tmpClick);
 
@@ -303,7 +303,7 @@ public class MainFrame extends JFrame {
 					tmpClick.setTime(time);
 					tmpClick.setTorf(false);
 					tmpClick.setX(e.getX() - padding_x);
-					tmpClick.setX(e.getY());
+					tmpClick.setY(e.getY());
 					clicks.add(tmpClick);
 				} else if (btn == MouseEvent.BUTTON3) {
 
@@ -338,7 +338,7 @@ public class MainFrame extends JFrame {
 				tmpClick.setTime(time);
 				tmpClick.setTorf(true);
 				tmpClick.setX(e.getX() - padding_x);
-				tmpClick.setX(e.getY());
+				tmpClick.setY(e.getY());
 
 				clicks.add(tmpClick);
 			}
