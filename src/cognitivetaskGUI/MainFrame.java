@@ -263,14 +263,14 @@ public class MainFrame extends JFrame {
 					end = System.currentTimeMillis();
 					// long time = end - start;
 					long time = end;
-					System.out.println(time + "ms");
+					//System.out.println(time + "ms");
 
 					tmpClick = new Click();
 					tmpClick.setTime(time);
 					// ここをなんとかする
 					if (!name.get(0).getText().equals("None")) {
 						tmpClick.setTorf(false);
-						System.out.println(name.get(0).getText());
+						//System.out.println(name.get(0).getText());
 						System.out.println("hhazure");
 						incorrect.play();
 						// totaltime += time;
@@ -297,7 +297,7 @@ public class MainFrame extends JFrame {
 					long time = end;
 					Date date = new Date(time);
 					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-					System.out.println(formatter.format(date));
+					//System.out.println(formatter.format(date));
 
 					tmpClick = new Click();
 					tmpClick.setTime(time);
@@ -305,6 +305,7 @@ public class MainFrame extends JFrame {
 					tmpClick.setX(e.getX() - padding_x);
 					tmpClick.setY(e.getY());
 					clicks.add(tmpClick);
+
 				} else if (btn == MouseEvent.BUTTON3) {
 
 				}
@@ -330,15 +331,15 @@ public class MainFrame extends JFrame {
 
 				// long time = end - start;
 				long time = end;
-				System.out.println(time + "ms");
+				//System.out.println(time + "ms");
 				// totaltime += time;
 				correctAnsNum++;
 
 				tmpClick = new Click();
 				tmpClick.setTime(time);
 				tmpClick.setTorf(true);
-				tmpClick.setX(e.getX() - padding_x);
-				tmpClick.setY(e.getY());
+				tmpClick.setX(lblAnnotation.getX()+e.getX());
+				tmpClick.setY(lblAnnotation.getY()+e.getY());
 
 				clicks.add(tmpClick);
 			}
@@ -502,11 +503,11 @@ public class MainFrame extends JFrame {
 
 			timer.stop();
 			tmpTask.setStartPreTime(System.currentTimeMillis());
-			System.out.println("pre画像");
+			//System.out.println("pre画像");
 
 			ImageIcon preImage = new ImageIcon(
 					currentDirectry + "/DataSet/" + currentTaskID + "/pre_" + currentTaskID + ".jpg");
-			System.out.println("koko" + currentTaskID);
+			System.out.println("現在の課題ID" + currentTaskID);
 
 			float maxSize = Math.max(preImage.getIconHeight(), preImage.getIconWidth());
 			mag = (float) (Math.min(panelWidth, panelHeight)) / maxSize;
@@ -541,7 +542,7 @@ public class MainFrame extends JFrame {
 			timer.stop();
 
 			tmpTask.setEndPreTime(System.currentTimeMillis());
-			System.out.println("pre画像終了");
+			//System.out.println("pre画像終了");
 			contentPane.remove(preImagePanel);
 			contentPane.add(blankPanel_2);
 			SwingUtilities.updateComponentTreeUI(contentPane);
@@ -608,7 +609,7 @@ public class MainFrame extends JFrame {
 			// stopwatchスタート
 			start = System.currentTimeMillis();
 			tmpTask.setStartPostTime(System.currentTimeMillis());
-			System.out.println("post画像開始");
+			//System.out.println("post画像開始");
 
 			// 制限時間スタート
 			ActionListener action = new PanelChangerPostImageToRest();
@@ -621,7 +622,7 @@ public class MainFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			tmpTask.setEndPostTime(System.currentTimeMillis());
-			System.out.println("post終了");
+			//System.out.println("post終了");
 			limitTimer.stop();
 
 			contentPane.remove(postImagePanel);
@@ -660,9 +661,9 @@ public class MainFrame extends JFrame {
 			clicks = null;
 			clicks = new ArrayList<Click>();
 			itr++;
-			System.out.println(itr);
-			System.out.println(taskOrder.size());
-			System.out.println(itr < taskOrder.size());
+			//System.out.println(itr);
+			//System.out.println(taskOrder.size());
+			//System.out.println(itr < taskOrder.size());
 			if (itr < taskOrder.size()) {
 				ActionListener action = new PanelChangerRestToBlank1();
 				timer = new Timer(0, action);
@@ -675,7 +676,7 @@ public class MainFrame extends JFrame {
 				scorePanel.changeScoreText(totaltime, correctAnsNum);
 
 				ActionListener action = new PanelChangerRestToScore();
-				System.out.println("correctAnsNum:" + correctAnsNum);
+				//System.out.println("correctAnsNum:" + correctAnsNum);
 				timer = new Timer(0, action);
 				//新しく入れた
 				timer.setRepeats(false);

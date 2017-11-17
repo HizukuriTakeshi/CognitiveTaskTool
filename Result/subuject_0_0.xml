@@ -3,41 +3,101 @@
     <subjectID>0</subjectID>
     <tasks>
         <taskID>-1</taskID>
-        <startPreTime>1510805059947</startPreTime>
-        <endPreTime>1510805062243</endPreTime>
-        <startPostTime>1510805063575</startPostTime>
-        <endPostTime>1510805064699</endPostTime>
+        <startPreTime>1510901316593</startPreTime>
+        <endPreTime>1510901318869</endPreTime>
+        <startPostTime>1510901320155</startPostTime>
+        <endPostTime>1510901330158</endPostTime>
         <clicks>
-            <time>1510805064678</time>
+            <time>1510901321239</time>
             <torf>false</torf>
-            <x>494</x>
-            <y>0</y>
+            <x>97</x>
+            <y>863</y>
+        </clicks>
+        <clicks>
+            <time>1510901322011</time>
+            <torf>false</torf>
+            <x>90</x>
+            <y>1010</y>
+        </clicks>
+        <clicks>
+            <time>1510901324573</time>
+            <torf>false</torf>
+            <x>9</x>
+            <y>414</y>
+        </clicks>
+        <clicks>
+            <time>1510901325485</time>
+            <torf>false</torf>
+            <x>106</x>
+            <y>162</y>
+        </clicks>
+        <clicks>
+            <time>1510901326213</time>
+            <torf>false</torf>
+            <x>181</x>
+            <y>274</y>
+        </clicks>
+        <clicks>
+            <time>1510901326897</time>
+            <torf>false</torf>
+            <x>46</x>
+            <y>249</y>
+        </clicks>
+        <clicks>
+            <time>1510901328030</time>
+            <torf>false</torf>
+            <x>39</x>
+            <y>168</y>
+        </clicks>
+        <clicks>
+            <time>1510901329849</time>
+            <torf>false</torf>
+            <x>98</x>
+            <y>762</y>
         </clicks>
     </tasks>
     <tasks>
         <taskID>-2</taskID>
-        <startPreTime>1510805066272</startPreTime>
-        <endPreTime>1510805068441</endPreTime>
-        <startPostTime>1510805069575</startPostTime>
-        <endPostTime>1510805071543</endPostTime>
+        <startPreTime>1510901335259</startPreTime>
+        <endPreTime>1510901337389</endPreTime>
+        <startPostTime>1510901338546</startPostTime>
+        <endPostTime>1510901341916</endPostTime>
         <clicks>
-            <time>1510805071535</time>
+            <time>1510901341913</time>
             <torf>true</torf>
-            <x>426</x>
-            <y>0</y>
+            <x>1267</x>
+            <y>214</y>
         </clicks>
     </tasks>
     <tasks>
         <taskID>-3</taskID>
-        <startPreTime>1510805073297</startPreTime>
-        <endPreTime>1510805075430</endPreTime>
-        <startPostTime>1510805076577</startPostTime>
-        <endPostTime>1510805077859</endPostTime>
+        <startPreTime>1510901346762</startPreTime>
+        <endPreTime>1510901348889</endPreTime>
+        <startPostTime>1510901350061</startPostTime>
+        <endPostTime>1510901353897</endPostTime>
         <clicks>
-            <time>1510805077859</time>
+            <time>1510901351554</time>
+            <torf>false</torf>
+            <x>409</x>
+            <y>574</y>
+        </clicks>
+        <clicks>
+            <time>1510901352416</time>
+            <torf>false</torf>
+            <x>422</x>
+            <y>660</y>
+        </clicks>
+        <clicks>
+            <time>1510901353175</time>
+            <torf>false</torf>
+            <x>421</x>
+            <y>559</y>
+        </clicks>
+        <clicks>
+            <time>1510901353897</time>
             <torf>true</torf>
-            <x>75</x>
-            <y>0</y>
+            <x>746</x>
+            <y>307</y>
         </clicks>
     </tasks>
 </result>
